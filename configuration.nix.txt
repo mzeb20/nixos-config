@@ -1,0 +1,43 @@
+{ config, pkgs, ... }:
+
+{
+  # ===== Basic System Settings =====
+  boot.loader.systemd-boot.enable = true; # UEFI boot recommended
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  networking.hostName = "mzeb"; # Set your hostname
+
+  # ===== User Configuration =====
+  users.users.mzeb = { # Replace with your username
+    isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager" ]; # Allow sudo and network management
+    # Set password during installation
+  };
+
+  # ===== Sway Window Manager =====
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true; # Better GTK application compatibility
+  };
+
+  # ===== Common Tools =====
+  environment.systemPackages = with pkgs; [
+    firefox
+    git
+    nvim
+  ];
+
+  # ===== Enable NetworkManager for WiFi/Ethernet =====
+  networking.networkmanager.enable = true;
+
+  # ===== Necessary Settings for Sway (for your Intel integrated graphics) =====
+  # Usually Intel graphics work out of the box, these are basic compatibility
+  hardware.graphics.enable = true;
+
+  # ===== Nix Configuration (Allow unfree software, enable Flakes) =====
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
+
+  # ===== System Version (Keep default) =====
+  system.stateVersion = "24.11"; # Adjust to the NixOS version you install
+}
