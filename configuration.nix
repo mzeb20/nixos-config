@@ -24,7 +24,7 @@
   environment.systemPackages = with pkgs; [
     firefox
     git
-    nvim
+    neovim
   ];
 
   # ===== Enable NetworkManager for WiFi/Ethernet =====
@@ -37,6 +37,13 @@
   # ===== Nix Configuration (Allow unfree software, enable Flakes) =====
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
+
+  # ===== Disk config =====
+
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-label/DATA";
+    fsType = "ext4";
+  };
 
   # ===== System Version (Keep default) =====
   system.stateVersion = "24.11"; # Adjust to the NixOS version you install
